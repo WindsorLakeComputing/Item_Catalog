@@ -37,8 +37,117 @@ session.add(countryItem1)
 session.commit()
 
 
-countryItem2 = CountryItem(user_id=1, title=" IMKO-1", description="The first Bulgarian-made personal computer",
+countryItem2 = CountryItem(user_id=1, title="IMKO-1", description="The first Bulgarian-made personal computer",
                      country=country1)
+
+session.add(countryItem2)
+session.commit()
+
+
+country2 = Country(name="Czechoslovakia")
+
+session.add(country2)
+session.commit()
+
+countryItem1 = CountryItem(user_id=1, title="Bata Shoe Organisation", description="A family-owned global footwear and fashion accessory manufacturer and retailer with acting headquarters",
+                     country=country2)
+
+session.add(countryItem2)
+session.commit()
+
+
+countryItem2 = CountryItem(user_id=1, title="Wyborowa", description="Czech Vodka",
+                     country=country2)
+
+session.add(countryItem2)
+session.commit()
+
+country3 = Country(name="East Germany")
+
+session.add(country3)
+session.commit()
+
+countryItem1 = CountryItem(user_id=1, title="Praktica", description="A brand of camera manufactured by Pentacon in Dresden",
+                     country=country3)
+
+session.add(countryItem1)
+session.commit()
+
+
+countryItem2 = CountryItem(user_id=1, title="Trabant", description="A car that produced by East German auto maker VEB Sachsenring Automobilwerke Zwickau",
+                     country=country3)
+
+session.add(countryItem2)
+session.commit()
+
+country4 = Country(name="Hungary")
+
+session.add(country4)
+session.commit()
+
+countryItem1 = CountryItem(user_id=1, title="MAVAG", description="A Hungarian rail vehicle producer",
+                     country=country4)
+
+session.add(countryItem1)
+session.commit()
+
+
+countryItem2 = CountryItem(user_id=1, title="Magomobil", description="The most important Hungarian vehicle manufacturer before World War II, based in Budapest.",
+                     country=country4)
+
+session.add(countryItem2)
+session.commit()
+
+country5 = Country(name="Poland")
+
+session.add(country5)
+session.commit()
+
+countryItem1 = CountryItem(user_id=1, title="Powszechna Kasa Oszczednosci Bank Polski Spolka Akcyjna", description="Poland's largest bank",
+                     country=country5)
+
+session.add(countryItem1)
+session.commit()
+
+
+countryItem2 = CountryItem(user_id=1, title="Polski Koncern Naftowy Orlen", description="A major Polish oil refiner and petrol retailer",
+                     country=country5)
+
+session.add(countryItem2)
+session.commit()
+
+country6 = Country(name="Romania")
+
+session.add(country6)
+session.commit()
+
+countryItem1 = CountryItem(user_id=1, title="Extreme Light Infrastructure", description="A laser facility that aims to host the most intense Beamline system world-wide, develop new interdisciplinary research opportunities with light from these lasers and secondary radiation derived from them, and make them available to an international scientific user community",
+                     country=country6)
+
+session.add(countryItem1)
+session.commit()
+
+
+countryItem2 = CountryItem(user_id=1, title="Goliat", description="The first artificial satellite developed in Romania",
+                     country=country6)
+
+session.add(countryItem2)
+session.commit()
+
+country7 = Country(name="Soviet Union")
+
+session.add(country7)
+session.commit()
+
+countryItem1 = CountryItem(user_id=1, title="Gorkovsky Avtomobilny Zavod", description="The leading manufacturer of commercial vehicles in the Soviet Union",
+                     country=country7)
+
+session.add(countryItem1)
+session.commit()
+
+
+countryItem2 = CountryItem(user_id=1, title="Bolshevichka", description="A clothes factory in Moscow",
+                     country=country7)
 
 session.add(countryItem2)
 session.commit()
