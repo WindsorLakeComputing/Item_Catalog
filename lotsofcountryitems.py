@@ -25,7 +25,7 @@ user1 = User(name="Ivan Konev", email="Ivan@ussr.com",
 session.add(user1)
 session.commit()
 
-country1 = Country(name="Bulgaria")
+country1 = Country(user_id=1, name="Bulgaria")
 
 session.add(country1)
 session.commit()
@@ -44,7 +44,7 @@ session.add(countryItem2)
 session.commit()
 
 
-country2 = Country(name="Czechoslovakia")
+country2 = Country(user_id=1, name="Czechoslovakia")
 
 session.add(country2)
 session.commit()
@@ -62,7 +62,7 @@ countryItem2 = CountryItem(user_id=1, title="Wyborowa", description="Czech Vodka
 session.add(countryItem2)
 session.commit()
 
-country3 = Country(name="East Germany")
+country3 = Country(user_id=1, name="East Germany")
 
 session.add(country3)
 session.commit()
@@ -80,7 +80,7 @@ countryItem2 = CountryItem(user_id=1, title="Trabant", description="A car that p
 session.add(countryItem2)
 session.commit()
 
-country4 = Country(name="Hungary")
+country4 = Country(user_id=1, name="Hungary")
 
 session.add(country4)
 session.commit()
@@ -98,7 +98,7 @@ countryItem2 = CountryItem(user_id=1, title="Magomobil", description="The most i
 session.add(countryItem2)
 session.commit()
 
-country5 = Country(name="Poland")
+country5 = Country(user_id=1, name="Poland")
 
 session.add(country5)
 session.commit()
@@ -116,7 +116,7 @@ countryItem2 = CountryItem(user_id=1, title="Polski Koncern Naftowy Orlen", desc
 session.add(countryItem2)
 session.commit()
 
-country6 = Country(name="Romania")
+country6 = Country(user_id=1, name="Romania")
 
 session.add(country6)
 session.commit()
@@ -134,7 +134,7 @@ countryItem2 = CountryItem(user_id=1, title="Goliat", description="The first art
 session.add(countryItem2)
 session.commit()
 
-country7 = Country(name="Soviet Union")
+country7 = Country(user_id=1, name="Soviet Union")
 
 session.add(country7)
 session.commit()
