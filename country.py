@@ -56,11 +56,18 @@ def showCountry(country_id):
     print "creator == ", creator.name
     items = session.query(CountryItem).filter_by(
         country_id=country_id).all()
-    #if 'username' not in login_session or creator.id != login_session['user_id']:
-    #    return render_template('publicmenu.html', items=items, restaurant=restaurant, creator=creator)
+    for item in items:
+        print "items == ", item.description
+    if 'username' not in login_session: #or creator.id != login_session['user_id']:
+        return render_template('publiccountry.html', items=items, country=country, creator=creator)
     #else:
     #    return render_template('menu.html', items=items, restaurant=restaurant, creator=creator)
 
+@app.route('/country/<int:country_id>/countryitem/<int:countryitem_id>/')
+#@app.route('/restaurant/<int:restaurant_id>/menu/')
+def showCountryItem(country_id, countryitem_id):
+    countryItem = session.query(CountryItem).filter_by(id=countryitem_id).one()
+    return render_template('publiccountryitem.html', countryItem=countryItem)
 
 if __name__ == '__main__':
     #app.secret_key = 'super_secret_key'
