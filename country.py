@@ -42,14 +42,14 @@ def getUserInfo(user_id):
 def gconnect():
     # Validate state token
     print "HI!!!!!!!!!!!!!!!!!"
-    if request.args.get('state') != login_session['state']:
-        print"request.args.get('state') != login_session['state']"
-        response = make_response(json.dumps('Invalid state parameter.'), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
+    #if request.args.get('state') != login_session['state']:
+    #    print"request.args.get('state') != login_session['state']"
+    #    response = make_response(json.dumps('Invalid state parameter.'), 401)
+    #    response.headers['Content-Type'] = 'application/json'
+    #    return response
     # Obtain authorization code
     code = request.data
-    print "The code is ", code
+    #print "The code is ", code
 
     try:
         # Upgrade the authorization code into a credentials object
@@ -183,6 +183,6 @@ def showCountryItem(country_id, countryitem_id):
     return render_template('publiccountryitem.html', countryItem=countryItem)
 
 if __name__ == '__main__':
-    #app.secret_key = 'super_secret_key'
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
