@@ -20,7 +20,7 @@ app = Flask(__name__)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Restaurant Menu Application"
+APPLICATION_NAME = "Country Item Application"
 
 # Connect to Database and create database session
 engine = create_engine('sqlite:///country.db')
@@ -91,17 +91,20 @@ def gconnect():
         return response
 
     # Verify that the access token is valid for this app.
-    if result['issued_to'] != CLIENT_ID:
-        response = make_response(
-            json.dumps("Token's client ID does not match app's."), 401)
-        print "Token's client ID does not match app's."
-        response.headers['Content-Type'] = 'application/json'
-        return response
+    #if result['issued_to'] != CLIENT_ID:
+    #    response = make_response(
+    #        json.dumps("Token's client ID does not match app's."), 401)
+    #    print "Token's client ID does not match app's."
+    #    response.headers['Content-Type'] = 'application/json'
+    #    return response
 
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
 
-    print "stored_gplus_id  == ", stored_gplus_id 
+    print "stored_gplus_id  == ", stored_gplus_id
+    print "gplus_id == stored_gplus_id:" 
+    print "gplus_id ", gplus_id
+    print "stored_gplus_id ", stored_gplus_id
     if stored_credentials is not None and gplus_id == stored_gplus_id:
         response = make_response(json.dumps('Current user is already connected.'),
                                  200)
@@ -134,6 +137,8 @@ def gconnect():
         print "user exists in the DB"
 
     login_session['user_id'] = user_id
+    login_session['provider'] = 'google'
+    print "login_session['provider']", login_session['provider']
 
 
     output = ''
@@ -153,14 +158,14 @@ def gconnect():
 @app.route('/country/')
 def showCountries():
     countries = session.query(Country).order_by(asc(Country.name))
+    #print "login_session['username'] ==", login_session['username']
     if 'username' not in login_session:
         return render_template('publiccountries.html', countries=countries)
     else:
-        return render_template('publiccountries.html', countries=countries)
+        return render_template('countries.html', countries=countries)
 
 
 @app.route('/country/<int:country_id>/')
-#@app.route('/restaurant/<int:restaurant_id>/menu/')
 def showCountry(country_id):
     country = session.query(Country).filter_by(id=country_id).one()
     print "country.name == ", country.name
@@ -171,16 +176,138 @@ def showCountry(country_id):
         country_id=country_id).all()
     for item in items:
         print "items == ", item.description
-    if 'username' not in login_session: #or creator.id != login_session['user_id']:
+    if 'username' not in login_session:# or creator.id != login_session['user_id']:
         return render_template('publiccountry.html', items=items, country=country, creator=creator)
-    #else:
-    #    return render_template('menu.html', items=items, restaurant=restaurant, creator=creator)
+    else:
+        return render_template('country.html', items=items, country=country, creator=creator)
 
 @app.route('/country/<int:country_id>/countryitem/<int:countryitem_id>/')
-#@app.route('/restaurant/<int:restaurant_id>/menu/')
 def showCountryItem(country_id, countryitem_id):
     countryItem = session.query(CountryItem).filter_by(id=countryitem_id).one()
     return render_template('publiccountryitem.html', countryItem=countryItem)
+
+#Edit a country item
+@app.route('/country/<int:country_id>/item/<int:country_item_id>/edit', methods=['GET','POST'])
+def editCountryItem(country_id, country_item_id):
+
+    editedItem = session.query(CountryItem).filter_by(id = country_item_id).one()
+    country = session.query(Country).filter_by(id = country_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedItem.name = request.form['name']
+        if request.form['description']:
+            editedItem.description = request.form['description']
+        session.add(editedItem)
+        session.commit() 
+        flash('Country Item Successfully Edited')
+        return redirect(url_for('showCountry', country_id = country_id))
+    else:
+        return render_template('editmenuitem.html', country_id = country_id, country_item_id = country_item_id, item = editedItem)
+
+
+#Delete a menu item
+@app.route('/restaurant/<int:country_id>/menu/<int:country_item_id>/delete', methods = ['GET','POST'])
+def deleteCountryItem(country_id,country_item_id):
+
+    menu_item = session.query(MenuItem).filter_by(id = country_item_id).one()
+    print "Menu id is ", country_item_id
+    creator = getUserInfo(MenuItem.user_id)
+    #restaurant = session.query(Restaurant).filter_by(id = country_id).one()
+    itemToDelete = session.query(MenuItem).filter_by(id = country_item_id).one() 
+    if (login_session['user_id'] != creator.id):
+        print "THIS USER DIDN\"T CREATE MENU ITEM"
+        return redirect(url_for('showMenu', country_id = country_id))
+    if request.method == 'POST':
+        session.delete(itemToDelete)
+        session.commit()
+        flash('Menu Item Successfully Deleted')
+        return redirect(url_for('showMenu', country_id = country_id))
+    else:
+        return render_template('deleteMenuItem.html', item = itemToDelete)
+
+#Create a new menu item
+@app.route('/country/<int:country_id>/item/new/',methods=['GET','POST'])
+def newCountryItem(country_id):
+  country = session.query(Country).filter_by(id = country_id).one()
+  if request.method == 'POST':
+      newItem = CountryItem(name = request.form['name'], description = request.form['description'], country_id = country_id)
+      session.add(newItem)
+      session.commit()
+      flash('New Menu %s Item Successfully Created' % (newItem.name))
+      return redirect(url_for('showCountry', country_id = country_id))
+  else:
+      return render_template('newmenuitem.html', country_id = country_id)
+
+
+# User Helper Functions
+
+
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
+
+@app.route('/gdisconnect')
+def gdisconnect():
+    # Only disconnect a connected user.
+    print "inside gdisconnect"
+    credentials = login_session.get('credentials')
+    if credentials is None:
+        response = make_response(
+            json.dumps('Current user not connected.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    access_token = credentials.access_token
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    if result['status'] != '200':
+        # For whatever reason, the given token was invalid.
+        response = make_response(
+            json.dumps('Failed to revoke token for given user.', 400))
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+# Disconnect based on provider
+@app.route('/disconnect')
+def disconnect():
+    print "inside of disconnect"
+    print "login_session['provider']", login_session['provider']
+    if 'provider' in login_session:
+        print "login_session['provider'] == ", login_session['provider']
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            del login_session['gplus_id']
+            del login_session['credentials']
+        if login_session['provider'] == 'facebook':
+            fbdisconnect()
+            del login_session['facebook_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['user_id']
+        del login_session['provider']
+        flash("You have successfully been logged out.")
+        return redirect(url_for('showCountries'))
+    else:
+        flash("You were not logged in")
+        return redirect(url_for('showCountries'))
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
