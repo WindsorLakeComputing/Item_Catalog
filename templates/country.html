@@ -48,7 +48,7 @@
 				<h2>Appetizers</h2>
 					{% for i in items %}
 							<div class="menu-item">
-								<h3>{{i.name}}</h3>
+								<h3>{{i.title}}</h3>
 								<p>{{i.description}}</p>
 								<a href='{{url_for('editCountryItem', country_id = country.id, country_item_id=i.id ) }}'>Edit</a> | 
 								<a href='{{url_for('deleteCountryItem', country_id = country.id, country_item_id=i.id ) }}'>Delete</a>

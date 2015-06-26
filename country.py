@@ -202,7 +202,7 @@ def editCountryItem(country_id, country_item_id):
         flash('Country Item Successfully Edited')
         return redirect(url_for('showCountry', country_id = country_id))
     else:
-        return render_template('editmenuitem.html', country_id = country_id, country_item_id = country_item_id, item = editedItem)
+        return render_template('editcountryitem.html', country = country, item = editedItem)#country_id = country_id, country_item_id = country_item_id, item = editedItem)
 
 
 #Delete a menu item
