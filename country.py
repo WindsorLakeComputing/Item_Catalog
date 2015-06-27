@@ -192,17 +192,22 @@ def editCountryItem(country_id, country_item_id):
 
     editedItem = session.query(CountryItem).filter_by(id = country_item_id).one()
     country = session.query(Country).filter_by(id = country_id).one()
+    countries = session.query(Country).order_by(asc(Country.name)).filter(Country.name != country.name)
+    #countries.remove(country)
     if request.method == 'POST':
         if request.form['name']:
-            editedItem.name = request.form['name']
+            print "NEW NAME IS ", request.form['name']
+            editedItem.title = request.form['name']
         if request.form['description']:
             editedItem.description = request.form['description']
+        if request.form['country-selection']:
+            editedItem.country.name = request.form['country-selection']
         session.add(editedItem)
         session.commit() 
         flash('Country Item Successfully Edited')
         return redirect(url_for('showCountry', country_id = country_id))
     else:
-        return render_template('editcountryitem.html', country = country, item = editedItem)#country_id = country_id, country_item_id = country_item_id, item = editedItem)
+        return render_template('editcountryitem.html', country = country, item = editedItem, countries = countries)#country_id = country_id, country_item_id = country_item_id, item = editedItem)
 
 
 #Delete a menu item
