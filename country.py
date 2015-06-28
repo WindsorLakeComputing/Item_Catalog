@@ -214,21 +214,22 @@ def editCountryItem(country_id, country_item_id):
 @app.route('/restaurant/<int:country_id>/menu/<int:country_item_id>/delete', methods = ['GET','POST'])
 def deleteCountryItem(country_id,country_item_id):
 
-    menu_item = session.query(MenuItem).filter_by(id = country_item_id).one()
-    print "Menu id is ", country_item_id
-    creator = getUserInfo(MenuItem.user_id)
+    menu_item = session.query(CountryItem).filter_by(id = country_item_id).one()
+    print "Country id is ", country_item_id
+    creator = getUserInfo(CountryItem.user_id)
     #restaurant = session.query(Restaurant).filter_by(id = country_id).one()
-    itemToDelete = session.query(MenuItem).filter_by(id = country_item_id).one() 
+    itemToDelete = session.query(CountryItem).filter_by(id = country_item_id).one() 
     if (login_session['user_id'] != creator.id):
         print "THIS USER DIDN\"T CREATE MENU ITEM"
-        return redirect(url_for('showMenu', country_id = country_id))
+        #return redirect(url_for('showMenu', country_id = country_id))
     if request.method == 'POST':
+        print "ABOUT TO DELETE!!!!!!!!!"
         session.delete(itemToDelete)
         session.commit()
         flash('Menu Item Successfully Deleted')
-        return redirect(url_for('showMenu', country_id = country_id))
+        return redirect(url_for('showCountry', country_id = country_id))
     else:
-        return render_template('deleteMenuItem.html', item = itemToDelete)
+        return render_template('deletecountryitem.html', item = itemToDelete)
 
 #Create a new menu item
 @app.route('/country/<int:country_id>/item/new/',methods=['GET','POST'])
