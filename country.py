@@ -211,7 +211,7 @@ def editCountryItem(country_id, country_item_id):
 
 
 #Delete a menu item
-@app.route('/restaurant/<int:country_id>/menu/<int:country_item_id>/delete', methods = ['GET','POST'])
+@app.route('/country/<int:country_id>/menu/<int:country_item_id>/delete', methods = ['GET','POST'])
 def deleteCountryItem(country_id,country_item_id):
 
     menu_item = session.query(CountryItem).filter_by(id = country_item_id).one()
@@ -234,15 +234,18 @@ def deleteCountryItem(country_id,country_item_id):
 #Create a new menu item
 @app.route('/country/<int:country_id>/item/new/',methods=['GET','POST'])
 def newCountryItem(country_id):
+  if 'username' not in login_session:
+    return redirect('/login')
   country = session.query(Country).filter_by(id = country_id).one()
+  countries = session.query(Country).order_by(asc(Country.name)).filter(Country.name != country.name)
   if request.method == 'POST':
-      newItem = CountryItem(name = request.form['name'], description = request.form['description'], country_id = country_id)
+      newItem = CountryItem(title = request.form['name'], description = request.form['description'], country_id = request.form['country-selection'])
       session.add(newItem)
       session.commit()
-      flash('New Menu %s Item Successfully Created' % (newItem.name))
+      flash('New Menu %s Item Successfully Created' % (newItem.title))
       return redirect(url_for('showCountry', country_id = country_id))
   else:
-      return render_template('newmenuitem.html', country_id = country_id)
+      return render_template('newcountryitem.html', country = country, countries = countries)
 
 
 # User Helper Functions
