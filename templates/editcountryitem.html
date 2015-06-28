@@ -26,9 +26,9 @@
 					<label class="control-label col-sm-offset-2 col-sm-2" for="country-selection">Country</label>
 					<div class="col-sm-6 col-md-4">
    					<select name="country-selection" class="form-control">
-						<option value="{{ country.name }}">{{ country.name }}</option>
+						<option value="{{ country.id }}">{{ country.name }}</option>
 			        {% for country in countries %}
-			            <option  value="{{ country.name }}">{{ country.name }}</option>
+			            <option  value="{{ country.id }}">{{ country.name }}</option>
 			        {% endfor %}
 			        </select>
 			          </div>

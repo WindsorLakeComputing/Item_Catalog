@@ -201,7 +201,7 @@ def editCountryItem(country_id, country_item_id):
         if request.form['description']:
             editedItem.description = request.form['description']
         if request.form['country-selection']:
-            editedItem.country.name = request.form['country-selection']
+            editedItem.country_id = request.form['country-selection']
         session.add(editedItem)
         session.commit() 
         flash('Country Item Successfully Edited')
