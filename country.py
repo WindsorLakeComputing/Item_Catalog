@@ -184,7 +184,8 @@ def showCountry(country_id):
 @app.route('/country/<int:country_id>/countryitem/<int:countryitem_id>/')
 def showCountryItem(country_id, countryitem_id):
     countryItem = session.query(CountryItem).filter_by(id=countryitem_id).one()
-    return render_template('publiccountryitem.html', countryItem=countryItem)
+    creator = getUserInfo(countryItem.user_id)
+    return render_template('publiccountryitem.html', countryItem=countryItem, creator=creator)
 
 #Edit a country item
 @app.route('/country/<int:country_id>/item/<int:country_item_id>/edit', methods=['GET','POST'])

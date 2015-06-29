@@ -8,8 +8,8 @@
 		<div class="col-md-11 col-md-offset-1 padding-none">
 			<h1>{{ countryItem.country.name }}
 			<figure class="creator">
-				<img src="{{ url_for('static', filename='blank_user.gif') }}">
-				<figcaption>Menu creator's name goes here</figcaption>
+				<img src="{{ creator.picture}}">
+				<figcaption>{{ creator.name }}</figcaption>
 			</figure>
 			</h1>
 
@@ -28,13 +28,11 @@
         {% endif %}
     {% endwith %}
 
-
-	
 	{% if countryItem !=[] %}	
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-3">
-				<h2>Appetizers</h2>
+				<h2>Country Item</h2>
 				<div class="country-item">
 					<h3>{{countryItem.title}}</h3>
 					<p>{{countryItem.description}}</p>
