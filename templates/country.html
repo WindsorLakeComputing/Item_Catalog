@@ -8,8 +8,8 @@
 		<div class="col-md-11 col-md-offset-1 padding-none">
 			<h1>{{ country.name }}
 			<figure class="creator">
-				<img src="{{ url_for('static', filename='blank_user.gif') }}">
-				<figcaption>Menu creator's name goes here</figcaption>
+				<img src="{{ creator.picture}}">
+				<figcaption>{{ creator.name }}</figcaption>
 			</figure>
 			</h1>
 
@@ -34,7 +34,7 @@
 		<div class="col-md-11 padding-none">
 			<a href="{{url_for('newCountryItem', country_id = country.id )}}">
 				<button class="btn btn-default" id="new-menu-item">
-					<span class="glyphicon glyphicon-glass" aria-hidden="true"></span>Add Country Item
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>Add Country Item
 				</button>
 			</a>
 		</div>
