@@ -20,7 +20,7 @@ class User(Base):
            'name'         : self.name,
            'id'           : self.id,
            'email'        : self.email,
-           'picture'      : self.picture,
+           'picture'      : self.picture
        }
 
 class Country(Base):
@@ -37,6 +37,8 @@ class Country(Base):
        return {
            'name'         : self.name,
            'id'           : self.id,
+           'user_id'      : self.user_id,
+           'user'         : self.user
        }
 
 
@@ -57,8 +59,13 @@ class CountryItem(Base):
        """Return object data in easily serializeable format"""
        return {
            'title'         : self.name,
-           'description'         : self.description,
-           'id'         : self.id,
+           'description'   : self.description,
+           'id'            : self.id,
+           'description'   : self.description,
+           'country_id'    : self.country_id,
+           'country'       : self.country,
+           'user_id'       : self.user_id,
+           'user'          : self.user
        }
 
 

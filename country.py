@@ -129,6 +129,9 @@ def gconnect():
 def showCountries():
 
     countries = session.query(Country).order_by(asc(Country.name))
+    serials = jsonify(json_list = countries)
+    print serials
+    
     if 'username' not in login_session:
         return render_template('publiccountries.html', countries=countries)
     else:
@@ -139,8 +142,6 @@ def showCountries():
 def showCountry(country_id):
 
     country = session.query(Country).filter_by(id=country_id).one()
-    print "country.name == ", country.name
-    print "country.user_id == ", country.user_id
     creator = getUserInfo(country.user_id)
     print "creator == ", creator.name
     items = session.query(CountryItem).filter_by(
@@ -188,7 +189,7 @@ def deleteCountryItem(country_id,country_item_id):
     menu_item = session.query(CountryItem).filter_by(id = country_item_id).one()
     creator = getUserInfo(CountryItem.user_id)
     itemToDelete = session.query(CountryItem).filter_by(id = country_item_id).one() 
-    if (login_session['user_id'] != creator.id):
+    #if (login_session['user_id'] != creator.id):
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
