@@ -12,14 +12,11 @@
 				<figcaption>{{ creator.name }}</figcaption>
 			</figure>
 			</h1>
-
 		</div>
 	</div>
-
 <div class = 'flash'>
 		      {% with messages = get_flashed_messages() %}
       {% if messages %}
-          
         <ul>
         {% for message in messages %}
             <li> <strong> {{ message }} </strong> </li>
@@ -27,7 +24,6 @@
         </ul>
         {% endif %}
     {% endwith %}
-
 	{% if countryItem !=[] %}	
 		<div class="row">
 			<div class="col-md-1"></div>

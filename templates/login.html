@@ -3,20 +3,10 @@
   <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
   </script>
-
 <script src="//apis.google.com/js/platform.js?onload=start"> </script>
-
-<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
-
-
 </head>
-
-
 <body>  
-
 <!-- GOOGLE PLUS SIGN IN-->
-
-          
           <div id="signInButton">
           <span class="g-signin"
             data-scope="openid email"
@@ -28,10 +18,7 @@
             data-approvalprompt="force">
           </span>
         </div>
-
 <div id="result"></div>
-
-
 <script>
 function signInCallback(authResult) {
   if (authResult['code']) {
@@ -58,11 +45,7 @@ function signInCallback(authResult) {
         $('#result').html('Failed to make a server-side call. Check your configuration and console.');
          }
       }
-      
   }); } }
 </script>
-
-
   </body>
-
   </html>
