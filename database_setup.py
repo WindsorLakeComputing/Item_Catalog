@@ -36,9 +36,7 @@ class Country(Base):
        """Return object data in easily serializeable format"""
        return {
            'name'         : self.name,
-           'id'           : self.id,
-           'user_id'      : self.user_id,
-           'user'         : self.user
+           'id'           : self.id
        }
 
 
@@ -53,24 +51,15 @@ class CountryItem(Base):
     user_id = Column(Integer,ForeignKey('user.id'))
     user = relationship(User)
 
-
     @property
     def serialize(self):
        """Return object data in easily serializeable format"""
        return {
-           'title'         : self.name,
+           'title'         : self.title,
            'description'   : self.description,
-           'id'            : self.id,
-           'description'   : self.description,
-           'country_id'    : self.country_id,
-           'country'       : self.country,
-           'user_id'       : self.user_id,
-           'user'          : self.user
+           'id'            : self.id
        }
-
-
 
 engine = create_engine('sqlite:///country.db')
  
-
 Base.metadata.create_all(engine)

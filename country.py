@@ -129,13 +129,16 @@ def gconnect():
 def showCountries():
 
     countries = session.query(Country).order_by(asc(Country.name))
-    serials = jsonify(json_list = countries)
-    print serials
-    
     if 'username' not in login_session:
         return render_template('publiccountries.html', countries=countries)
     else:
         return render_template('countries.html', countries=countries)
+
+
+@app.route('/country/JSON')
+def countriesJSON():
+    countries = session.query(Country).all()
+    return jsonify(countries=[c.serialize for c in countries])
 
 #Show a specific country according to its id
 @app.route('/country/<int:country_id>/')
@@ -153,13 +156,29 @@ def showCountry(country_id):
     else:
         return render_template('country.html', items=items, country=country, creator=creator)
 
+# JSON APIs to view Country Information
+@app.route('/country/<int:country_id>/JSON')
+def countryJSON(country_id):
+    country = session.query(Country).filter_by(id=country_id).one()
+    items = session.query(CountryItem).filter_by(
+        country_id=country_id).all()
+    return jsonify(CountryItems=[i.serialize for i in items])
+
+
 #Show a specific country item according to its specific id
 @app.route('/country/<int:country_id>/countryitem/<int:countryitem_id>/')
+
 def showCountryItem(country_id, countryitem_id):
 
     countryItem = session.query(CountryItem).filter_by(id=countryitem_id).one()
     creator = getUserInfo(countryItem.user_id)
     return render_template('publiccountryitem.html', countryItem=countryItem, creator=creator)
+
+@app.route('/country/<int:country_id>/countryitem/<int:countryitem_id>/JSON')
+def countryItemJSON(country_id, countryitem_id):
+
+    Country_Item = session.query(CountryItem).filter_by(id=country_id).one()
+    return jsonify(Country_Item=Country_Item.serialize)
 
 #Edit a country item
 @app.route('/country/<int:country_id>/item/<int:country_item_id>/edit', methods=['GET','POST'])
@@ -286,5 +305,6 @@ def disconnect():
         return redirect(url_for('showCountries'))
 
 if __name__ == '__main__':
+    app.secret_key = 'Beware the Ides of March'
     app.debug = False
     app.run(host='0.0.0.0', port=5000)
