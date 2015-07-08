@@ -41,6 +41,7 @@ def getUserInfo(user_id):
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
+#login via Google
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
@@ -134,7 +135,7 @@ def showCountries():
     else:
         return render_template('countries.html', countries=countries)
 
-
+#Show all countries via JSON
 @app.route('/country/JSON')
 def countriesJSON():
     countries = session.query(Country).all()
@@ -174,6 +175,7 @@ def showCountryItem(country_id, countryitem_id):
     creator = getUserInfo(countryItem.user_id)
     return render_template('publiccountryitem.html', countryItem=countryItem, creator=creator)
 
+#Show a specific country via JSON
 @app.route('/country/<int:country_id>/countryitem/<int:countryitem_id>/JSON')
 def countryItemJSON(country_id, countryitem_id):
 
